@@ -1,0 +1,13 @@
+# Clé GCP - ne jamais commiter !
+service-account-key.json
+*.json
+
+# SDK Google Cloud - inutile sur GitHub
+google-cloud-sdk/
+google-cloud-cli-darwin-arm.tar.gz
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
