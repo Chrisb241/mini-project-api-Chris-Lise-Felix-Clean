@@ -1,16 +1,13 @@
 from flask import Flask, jsonify
 import datetime
 from app.gcs import read_json_from_gcs
-import vertexai
-from vertexai.generative_models import GenerativeModel
+import google.generativeai as genai
 import os
 
 app = Flask(__name__)
 
-# Config Vertex AI
-PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "project-3f443971-257c-4f30-9d3")
-LOCATION = os.environ.get("GCP_LOCATION", "europe-west1")
-vertexai.init(project=PROJECT_ID, location=LOCATION)
+# Config Gemini
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
 # HELLO
 @app.route("/hello", methods=["GET"])
@@ -34,7 +31,7 @@ def get_data():
 @app.route("/poem", methods=["GET"])
 def generate_poem():
     try:
-        model = GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-2.5-flash")
         response = model.generate_content(
             "Écris un court poème original sur la programmation, en français, de 4 vers."
         )
