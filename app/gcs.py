@@ -1,4 +1,19 @@
-from google.cloud import storage
+def write_to_gcs(new_entry: dict):
+    client = storage.Client()
+    bucket = client.bucket(BUCKET_NAME)
+    blob = bucket.blob(FILE_NAME)
+
+    if blob.exists():
+        data = json.loads(blob.download_as_text())
+    else:
+        data = []
+
+    data.append(new_entry)
+
+    blob.upload_from_string(
+        json.dumps(data, indent=2),
+        content_type="application/json"
+    )from google.cloud import storage
 import os
 import json 
 

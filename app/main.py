@@ -1,6 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import datetime
-from app.gcs import read_json_from_gcs
+from app.gcs import read_json_from_gcs, write_to_gcs
 
 app = Flask(__name__)
 
@@ -15,12 +15,13 @@ def status():
     return jsonify({"date": str(datetime.datetime.now())})
 
 # DATA
-@app.route("/data")
-def get_data():
-    try:
-        return jsonify(read_json_from_gcs())
-    except Exception as e:
-        return jsonify({"error": str(e)})
+@app.route("/data", methods=["POST"])
+def add_data():
+    body = request.get_json()
+    if not body:
+        return jsonify({"error": "Corps JSON manquant"}), 400
+    write_to_gcs(body)
+    return jsonify({"message": "Entrée ajoutée avec succès"}), 201
 
 
 
