@@ -29,10 +29,10 @@ pip install -r requirements.txt
 ### Variables d'environnement
 
 ```bash
-export BUCKET_NAME=mini-projet-chris-lise-123
+export BUCKET_NAME=mini-projet-felix-123
 export FILE_NAME=data.json
-export GCP_PROJECT_ID=datatools-493010
-export GCP_LOCATION=europe-west1
+export GCP_PROJECT_ID=project-3f443971-257c-4f30-9d3
+export GCP_LOCATION=us-central1
 export GOOGLE_APPLICATION_CREDENTIALS=chemin/vers/service-account-key.json
 ```
 
@@ -45,25 +45,26 @@ python -m flask --app app.main run --host=0.0.0.0 --port=8080
 ## Build Docker
 
 ```bash
-docker build --platform linux/amd64 -t chrisb045/mini-api:v2 .
-docker push chrisb045/mini-api:v2
+docker build --platform linux/amd64 -t felixmartinet/flask-vertex-api:v2 .
+docker push felixmartinet/flask-vertex-api:v2
 ```
 
 ## Déploiement Cloud Run
 
 ```bash
-gcloud run deploy mini-api \
-  --image docker.io/chrisb045/mini-api:v2 \
+gcloud run deploy flask-vertex-api \
+  --image docker.io/felixmartinet/flask-vertex-api:v2 \
   --platform managed \
   --region europe-west1 \
   --allow-unauthenticated \
   --port 8080 \
-  --set-env-vars BUCKET_NAME=mini-projet-chris-lise-123,FILE_NAME=data.json,GCP_PROJECT_ID=datatools-493010,GCP_LOCATION=europe-west1
+  --set-env-vars BUCKET_NAME=mini-projet-felix-123,FILE_NAME=data.json,GCP_PROJECT_ID=project-3f443971-257c-4f30-9d3,GCP_LOCATION=us-central1
 ```
 
 ## Liens
 
-- API déployée : https://mini-api-119046353840.europe-west1.run.app
+- API déployée (Félix) : https://flask-vertex-api-685634288851.europe-west1.run.app
+- API déployée (Chris) : https://mini-api-119046353840.europe-west1.run.app
 - Image Docker Hub : https://hub.docker.com/r/felixmartinet/flask-vertex-api
 
 ## Répartition des rôles
@@ -72,4 +73,4 @@ gcloud run deploy mini-api \
 |--------|-------------|
 | Chris (Chrisb241) | Initialisation Flask, endpoints `/hello`, `/status`, `/data` GET, endpoint `/poem` Vertex AI |
 | Lise (lisecolinot-hash) | Endpoint `POST /data`, fonction `write_to_gcs`, intégration GCS écriture |
-| Félix (felixmartinet) | Dockerfile, `.gitignore`, `requirements.txt`, configuration GCP, déploiement Cloud Run |
+| Félix (felixmartinet) | Dockerfile, `.gitignore`, `requirements.txt`, configuration GCP, déploiement Cloud Run, bucket GCS |
