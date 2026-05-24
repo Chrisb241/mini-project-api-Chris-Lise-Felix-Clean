@@ -64,7 +64,6 @@ gcloud run deploy flask-vertex-api \
 ## Liens
 
 - API déployée (Félix) : https://flask-vertex-api-685634288851.europe-west1.run.app
-- API déployée (Chris) : https://mini-api-119046353840.europe-west1.run.app
 - Image Docker Hub : https://hub.docker.com/r/felixmartinet/flask-vertex-api
 
 ## Répartition des rôles
