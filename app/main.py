@@ -42,7 +42,7 @@ def poem():
             project=os.environ.get("GCP_PROJECT_ID"),
             location=os.environ.get("GCP_LOCATION", "europe-west1")
         )
-        model = GenerativeModel("gemini-1.5-flash")
+        model = GenerativeModel("gemini-2.0-flash-001")
         response = model.generate_content(
             "Écris un court poème original sur la programmation, en français, de 4 vers."
         )
