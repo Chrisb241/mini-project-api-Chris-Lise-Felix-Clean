@@ -64,7 +64,7 @@ gcloud run deploy mini-api \
 ## Liens
 
 - API déployée : https://mini-api-119046353840.europe-west1.run.app
-- Image Docker Hub : https://hub.docker.com/r/chrisb045/mini-api
+- Image Docker Hub : https://hub.docker.com/r/felixmartinet/flask-vertex-api
 
 ## Répartition des rôles
 
