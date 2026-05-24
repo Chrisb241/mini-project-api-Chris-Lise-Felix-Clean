@@ -1,53 +1,75 @@
-# Mini Projet API Flask - GCP
-
-## Description
-API Flask déployée sur Google Cloud Run avec intégration Vertex AI pour la génération de poèmes.
+# Mini Projet API - Chris, Lise, Félix
+API REST développée avec Flask, déployée sur Google Cloud Run, utilisant Google Cloud Storage et Vertex AI.
 
 ## Endpoints
-- `GET /hello` → message de bienvenue
-- `GET /status` → date/heure serveur
-- `GET /data` → lit un fichier JSON depuis GCS
-- `POST /data` → ajoute une entrée dans GCS
-- `GET /poem` → génère un poème via Gemini AI
 
-## Exécution en local
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/hello` | Message de bienvenue |
+| GET | `/status` | Date et heure du serveur |
+| GET | `/data` | Lit le fichier JSON depuis GCS |
+| POST | `/data` | Ajoute une entrée dans le fichier GCS |
+| GET | `/poem` | Génère un poème via Vertex AI (Gemini) |
+
+## Lancer en local
+
+### Prérequis
+- Python 3.11+
+- Un compte de service GCP avec accès GCS et Vertex AI
+- Un bucket GCS créé
+
+### Installation
+
 ```bash
-cat > README.md << 'EOF'
-# Mini Projet API Flask - GCP
-
-## Description
-API Flask déployée sur Google Cloud Run avec intégration Vertex AI pour la génération de poèmes.
-
-## Endpoints
-- `GET /hello` → message de bienvenue
-- `GET /status` → date/heure serveur
-- `GET /data` → lit un fichier JSON depuis GCS
-- `POST /data` → ajoute une entrée dans GCS
-- `GET /poem` → génère un poème via Gemini AI
-
-## Exécution en local
-```bash
+git clone https://github.com/Chrisb241/mini-project-api-Chris-Lise-Felix-Clean.git
+cd mini-project-api-Chris-Lise-Felix-Clean
 pip install -r requirements.txt
-export GEMINI_API_KEY=ta-clé
+```
+
+### Variables d'environnement
+
+```bash
+export BUCKET_NAME=mini-projet-chris-lise-123
+export FILE_NAME=data.json
+export GCP_PROJECT_ID=datatools-493010
+export GCP_LOCATION=europe-west1
+export GOOGLE_APPLICATION_CREDENTIALS=chemin/vers/service-account-key.json
+```
+
+### Lancement
+
+```bash
 python -m flask --app app.main run --host=0.0.0.0 --port=8080
 ```
 
 ## Build Docker
+
 ```bash
-docker build -t flask-vertex-api .
-docker run -p 8080:8080 -e GEMINI_API_KEY=ta-clé flask-vertex-api
+docker build --platform linux/amd64 -t chrisb045/mini-api:v2 .
+docker push chrisb045/mini-api:v2
 ```
 
 ## Déploiement Cloud Run
+
 ```bash
-docker buildx build --platform linux/amd64 -t europe-west1-docker.pkg.dev/PROJECT_ID/flask-api/flask-vertex-api --push .
-gcloud run deploy flask-vertex-api --image europe-west1-docker.pkg.dev/PROJECT_ID/flask-api/flask-vertex-api --platform managed --region europe-west1 --allow-unauthenticated
+gcloud run deploy mini-api \
+  --image docker.io/chrisb045/mini-api:v2 \
+  --platform managed \
+  --region europe-west1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --set-env-vars BUCKET_NAME=mini-projet-chris-lise-123,FILE_NAME=data.json,GCP_PROJECT_ID=datatools-493010,GCP_LOCATION=europe-west1
 ```
 
-## URL Cloud Run
-https://flask-vertex-api-685634288851.europe-west1.run.app
+## Liens
 
-## Membres de l'équipe
-- **Félix** : endpoint /poem, Dockerfile, déploiement Cloud Run
-- **Chris** : endpoint /data, module GCS
-- **Lise** : endpoint /hello, /status
+- API déployée : https://mini-api-119046353840.europe-west1.run.app
+- Image Docker Hub : https://hub.docker.com/r/chrisb045/mini-api
+
+## Répartition des rôles
+
+| Membre | Contribution |
+|--------|-------------|
+| Chris (Chrisb241) | Initialisation Flask, endpoints `/hello`, `/status`, `/data` GET, endpoint `/poem` Vertex AI |
+| Lise (lisecolinot-hash) | Endpoint `POST /data`, fonction `write_to_gcs`, intégration GCS écriture |
+| Félix (felixmartinet) | Dockerfile, `.gitignore`, `requirements.txt`, configuration GCP, déploiement Cloud Run |
